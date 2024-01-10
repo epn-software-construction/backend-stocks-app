@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "strictNullChecks": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", ".eslintrc.js"]
+}
