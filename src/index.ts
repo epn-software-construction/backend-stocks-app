@@ -1,5 +1,4 @@
 const app = {
-  listen: jest.fn(),
   // some code
 };
 
