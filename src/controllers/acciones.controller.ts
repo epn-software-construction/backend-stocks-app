@@ -7,18 +7,22 @@ export const getUserStocks = async (req, res): Promise<void> => {
 };
 
 export const createAcciones = async (req, res): Promise<void> => {
-    const { nameStock, date, price, amount } = req.body;
+    const { stockSymbol, stockName, unitPrice, amount, totalPrice } = req.body;
+
+    const date = new Date().toISOString();
+
     const [rows] = await pool.query(
-        'insert into ACCION (idcartera, nombreaccion,fechacompra,precioaccion,cantidad,costototal) ' +
-            ' values (1,?,?,?,?,?)',
-        [nameStock, date, price, amount, price * amount],
+        'INSERT INTO ACCION (idcartera,stockname, stockSymbol,date,unitPrice,amount,totalPrice) VALUES (1,?,?,?,?,?,?)',
+        [stockName, stockSymbol, date, unitPrice, amount, totalPrice],
     );
 
     res.send({
         id: (rows as ResultSetHeader).insertId,
-        nameStock,
+        stockSymbol,
+        stockName,
         date,
-        price,
+        unitPrice,
+        totalPrice,
         amount,
     });
 };
