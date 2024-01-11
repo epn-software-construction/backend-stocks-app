@@ -9,7 +9,7 @@
         "start": "node dist/src/index.js",
         "lint": "eslint --ext .js,.ts .",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-        "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --passWithNoTests" ,
+        "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --passWithNoTests",
         "test:staged": "jest --bail --findRelatedTests --passWithNoTests"
     },
     "keywords": [],
