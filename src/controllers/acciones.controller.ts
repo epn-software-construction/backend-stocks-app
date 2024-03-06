@@ -3,6 +3,7 @@ import type { ResultSetHeader } from 'mysql2';
 import { pool } from '../database/db';
 
 interface StockData {
+    id: number;
     stockSymbol: string;
     stockName: string;
     date: string;
@@ -11,6 +12,12 @@ interface StockData {
     amount: number;
 }
 
+interface Stock {
+    id: number;
+    name: string;
+    symbol: string;
+    price: number;
+}
 export const getUserStocks = async (req, res): Promise<void> => {
     try {
         const [rows] = await pool.query('SELECT * FROM ACCION');
@@ -56,34 +63,42 @@ export const deleteAcciones = (req, res): void => {
 
 export const getAllStocks = async (req, res): Promise<void> => {
     try {
-        const formattedStocks: StockData[] = [];
-        const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'INTC', 'TSLA', 'NFLX', 'NVDA'];
-        const apiKey = '291b8c72d29549b5bf9f3fdc7cca19af';
+        /* const formattedStocks: Stock[] = [];
+         const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'INTC', 'TSLA', 'NFLX', 'NVDA'];
+         const apiKey = '291b8c72d29549b5bf9f3fdc7cca19af';
+ 
+         for (const symbol of stockSymbols) {
+             const response = await axios.get(`https://api.twelvedata.com/time_series?apikey=${apiKey}&interval=1min&symbol=${symbol}`);
+             console.log(response);
+             const { meta, values } = response.data;
+             const id = 0;
+             const stockSymbol = symbol;
+             const stockName = symbol;
+             const date = values[0].datetime;
+             const unitPrice = parseFloat(values[0].close);
+ 
+             formattedStocks.push({
+                 id,
+                 name: stockName,
+                 symbol,
+                 price: unitPrice
+             });
+ 
+ 
+         }*/
 
-        for (const symbol of stockSymbols) {
-            const response = await axios.get(`https://api.twelvedata.com/time_series?apikey=${apiKey}&interval=1min&symbol=${symbol}`);
+        const stocks = [
+            { id: 0, name: "AAPL", symbol: "AAPL", price: 170.17 },
+            { id: 0, name: "MSFT", symbol: "MSFT", price: 402.85001 },
+            { id: 0, name: "GOOGL", symbol: "GOOGL", price: 132.7 },
+            { id: 0, name: "AMZN", symbol: "AMZN", price: 174.13 },
+            { id: 0, name: "INTC", symbol: "INTC", price: 43.19 },
+            { id: 0, name: "TSLA", symbol: "TSLA", price: 180.8 },
+            { id: 0, name: "NFLX", symbol: "NFLX", price: 598.62 },
+            { id: 0, name: "NVDA", symbol: "NVDA", price: 859.94 }
+        ];
 
-            if (response.data && response.data.values && response.data.values.length > 0) {
-                const { meta, values } = response.data;
-                const stockSymbol = meta.symbol;
-                const stockName = meta.symbol;
-                const date = values[0].datetime;
-                const unitPrice = parseFloat(values[0].close);
-
-                formattedStocks.push({
-                    stockSymbol,
-                    stockName,
-                    date,
-                    unitPrice,
-                    totalPrice: 0,
-                    amount: 0,
-                });
-            } else {
-                console.error('La respuesta de la API no contiene datos válidos');
-            }
-        }
-
-        res.json(formattedStocks);
+        res.json(stocks);
     } catch (error) {
         console.error('Error al obtener las acciones:', error);
         res.status(500).json({ error: 'Error al obtener las acciones' });
