@@ -34,8 +34,8 @@ export const createAcciones = async (req, res): Promise<void> => {
         const date = new Date().toISOString();
 
         const [rows] = await pool.query(
-            'INSERT INTO ACCION (idcartera, stockname, stockSymbol, date, unitPrice, amount, totalPrice) VALUES (1, ?, ?, ?, ?, ?, ?)',
-            [stockName, stockSymbol, date, unitPrice, amount, totalPrice]
+            'insert into ACCION (IDCARTERA, NOMBREACCION,FECHACOMPRA,PRECIOACCION,CANTIDAD,COSTOTOTAL) VALUES (1, ?, ?, ?, ?, ?)',
+            [stockName, date, unitPrice, amount, totalPrice]
         );
 
         res.send({
