@@ -21,7 +21,16 @@ interface Stock {
 export const getUserStocks = async (req, res): Promise<void> => {
     try {
         const [rows] = await pool.query('SELECT * FROM ACCION');
-        res.json(rows);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data = (rows as ResultSetHeader[]).map((stock: any) => ({
+            stockName: stock.NOMBREACCION,
+            date: stock.FECHACOMPRA,
+            unitPrice: stock.PRECIOACCION,
+            totalPrice: stock.COSTOTOTAL,
+            amount: stock.CANTIDAD,
+        }));
+
+        res.json(data);
     } catch (error) {
         console.error('Error al obtener las acciones del usuario:', error);
         res.status(500).json({ error: 'Error al obtener las acciones del usuario' });
@@ -30,17 +39,15 @@ export const getUserStocks = async (req, res): Promise<void> => {
 
 export const createAcciones = async (req, res): Promise<void> => {
     try {
-        const { stockSymbol, stockName, unitPrice, amount, totalPrice } = req.body;
-        const date = new Date().toISOString();
+        const { stockName, unitPrice, amount, totalPrice, date } = req.body;
 
         const [rows] = await pool.query(
             'insert into ACCION (IDCARTERA, NOMBREACCION,FECHACOMPRA,PRECIOACCION,CANTIDAD,COSTOTOTAL) VALUES (1, ?, ?, ?, ?, ?)',
-            [stockName, date, unitPrice, amount, totalPrice]
+            [stockName, date, unitPrice, amount, totalPrice],
         );
 
         res.send({
             id: (rows as ResultSetHeader).insertId,
-            stockSymbol,
             stockName,
             date,
             unitPrice,
@@ -85,17 +92,17 @@ export const getAllStocks = async (req, res): Promise<void> => {
              });
  
  
-         }*/
+         } */
 
         const stocks = [
-            { id: 0, name: "AAPL", symbol: "AAPL", price: 170.17 },
-            { id: 0, name: "MSFT", symbol: "MSFT", price: 402.85001 },
-            { id: 0, name: "GOOGL", symbol: "GOOGL", price: 132.7 },
-            { id: 0, name: "AMZN", symbol: "AMZN", price: 174.13 },
-            { id: 0, name: "INTC", symbol: "INTC", price: 43.19 },
-            { id: 0, name: "TSLA", symbol: "TSLA", price: 180.8 },
-            { id: 0, name: "NFLX", symbol: "NFLX", price: 598.62 },
-            { id: 0, name: "NVDA", symbol: "NVDA", price: 859.94 }
+            { id: 0, name: 'AAPL', symbol: 'AAPL', price: 170.17 },
+            { id: 0, name: 'MSFT', symbol: 'MSFT', price: 402.85001 },
+            { id: 0, name: 'GOOGL', symbol: 'GOOGL', price: 132.7 },
+            { id: 0, name: 'AMZN', symbol: 'AMZN', price: 174.13 },
+            { id: 0, name: 'INTC', symbol: 'INTC', price: 43.19 },
+            { id: 0, name: 'TSLA', symbol: 'TSLA', price: 180.8 },
+            { id: 0, name: 'NFLX', symbol: 'NFLX', price: 598.62 },
+            { id: 0, name: 'NVDA', symbol: 'NVDA', price: 859.94 },
         ];
 
         res.json(stocks);
